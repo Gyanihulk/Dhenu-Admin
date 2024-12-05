@@ -14,10 +14,16 @@ const login = async (user) => {
     const response = await axios.post(
       `${base_url}/user/login?username=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`,
       {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
+        "username": email,
+        "password" : password,
+        "is_mobile": true,
+        "device_uuid": "unique1",
+        "fcm_token": "fcm_1",
+        "device_info": "information",
+        "os_type": "android",
+        "app_version": "v.1.0.0.1",
+        "google_login": false
+    }
     );
 
 

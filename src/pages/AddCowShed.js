@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from "react";
-import CustomInput from "../components/CustomInput";
-import { useLocation, useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-import * as yup from "yup";
-import { useFormik } from "formik";
-import { useDispatch, useSelector } from "react-redux";
+import CustomInput from "../components/CustomInput"; // Custom input component
+import { useLocation, useNavigate } from "react-router-dom"; // React Router hooks
+import { toast } from "react-toastify"; // Toast notifications
+import * as yup from "yup"; // Yup for validation schema
+import { useFormik } from "formik"; // Formik for form handling
+import { useDispatch, useSelector } from "react-redux"; // Redux hooks
 import {
-  createCowShed,
-  getCowShed,
-  resetState,
-  updateCowShed,
+  createCowShed, // Redux action for creating a cow shed
+  getCowShed, // Redux action for getting a specific cow shed
+  resetState, // Redux action to reset the state
+  updateCowShed, // Redux action for updating a cow shed
 } from "../features/cowShed/cowshedSlice";
-
+import Dropzone from "react-dropzone";
+import { formatAddress } from "../utils/helpers";
+// Define Yup validation schema
 const schema = yup.object().shape({
   name: yup.string().required("Name is required"),
   total_capacity: yup.number().required("Total capacity is required"),
@@ -32,17 +34,24 @@ const AddCowShed = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
-  const getCowShedId = location.pathname.split("/")[3];
-  
-  const cowshedState = useSelector((state) => state.cowshed);
-  const {
-    isSuccess,
-    isError,
-    createdCowShed,
-    updatedCowShed,
-    cowShedData,
-  } = cowshedState;
+  const getCowShedId = location.pathname.split("/")[3]; // Extract cow shed ID from the URL
 
+  const cowshedState = useSelector((state) => state.cowshed); // Access cow shed state from Redux
+  const { isSuccess, isError, createdCowShed, updatedCowShed, cowShedData } =
+    cowshedState;
+  const [images, setImages] = useState([]);
+
+  useEffect(() => {
+    if (cowShedData?.resources?.images?.length > 0) {
+      const existingImages = cowShedData.resources.images.map((img) => ({
+        id: img.id, // Keep the image ID for reference
+        preview: img.path, // Use the `path` for preview
+      }));
+      setImages(existingImages);
+    }
+  }, [cowShedData]);
+
+  // Fetch cow shed data if ID exists, otherwise reset state
   useEffect(() => {
     if (getCowShedId !== undefined) {
       dispatch(getCowShed(getCowShedId));
@@ -51,6 +60,7 @@ const AddCowShed = () => {
     }
   }, [getCowShedId, dispatch]);
 
+  // Show toast notifications based on success or error states
   useEffect(() => {
     if (isSuccess && createdCowShed) {
       toast.success("Cow Shed added successfully!");
@@ -64,7 +74,22 @@ const AddCowShed = () => {
       toast.error("Something went wrong!");
     }
   }, [isSuccess, isError, createdCowShed, updatedCowShed, navigate]);
-console.log(cowShedData)
+
+  const handleDrop = (acceptedFiles) => {
+    const newFiles = acceptedFiles.map((file) => ({
+      id: null, // New files won't have an ID
+      preview: URL.createObjectURL(file),
+      file, // Keep the actual file for submission
+    }));
+    setImages([...images, ...newFiles]);
+  };
+
+  const handleRemoveImage = (index) => {
+    const updatedImages = images.filter((_, idx) => idx !== index);
+    setImages(updatedImages);
+  };
+
+  // Initialize Formik
   const formik = useFormik({
     initialValues: {
       name: cowShedData?.name || "",
@@ -74,29 +99,38 @@ console.log(cowShedData)
       unproductive_cows: cowShedData?.unproductive_cows || "",
       description_line1: cowShedData?.description_line1 || "",
       GST: cowShedData?.GST || "",
-      total_area: cowShedData?.total_area || "",
+      total_area: parseInt(cowShedData?.total_area) || "",
       total_employees: cowShedData?.total_employees || "",
       incorporation_date: cowShedData?.incorporation_date || "",
       monthly_expenses: cowShedData?.monthly_expenses || "",
-      address: cowShedData?.address || "",
+      address: formatAddress(cowShedData?.address || ""),
       phone_number: cowShedData?.phone_number || "",
     },
-    enableReinitialize: true,
-    // validationSchema: schema,
+    enableReinitialize: true, // Reinitialize form with fetched cow shed data
+    validationSchema: schema, // Attach validation schema
     onSubmit: (values) => {
+      const formData = new FormData();
+
+      // Append form values
+      Object.keys(values).forEach((key) => {
+        formData.append(key, values[key]);
+      });
+
+      // Append only new images
+      images.forEach((image) => {
+        if (image.file) {
+          formData.append("images[]", image.file); // Add new images only
+        }
+      });
+
       if (getCowShedId !== undefined) {
-        const data = { id: getCowShedId, cowShedData: values };
-        dispatch(updateCowShed(data));
+        dispatch(updateCowShed({ id: getCowShedId, formData }));
       } else {
-        dispatch(createCowShed(values));
+        dispatch(createCowShed(formData));
         formik.resetForm();
-        setTimeout(() => {
-          dispatch(resetState());
-        }, 3000);
       }
     },
   });
-
   return (
     <div>
       <h3 className="mb-4 title">
@@ -107,6 +141,7 @@ console.log(cowShedData)
           onSubmit={formik.handleSubmit}
           className="d-flex gap-3 flex-column"
         >
+          {/* Name Input */}
           <CustomInput
             type="text"
             label="Enter Cow Shed Name"
@@ -118,7 +153,8 @@ console.log(cowShedData)
           <div className="error">
             {formik.touched.name && formik.errors.name}
           </div>
-          
+
+          {/* Total Capacity Input */}
           <CustomInput
             type="number"
             label="Total Capacity"
@@ -131,6 +167,7 @@ console.log(cowShedData)
             {formik.touched.total_capacity && formik.errors.total_capacity}
           </div>
 
+          {/* Current Capacity Input */}
           <CustomInput
             type="number"
             label="Current Capacity"
@@ -143,6 +180,7 @@ console.log(cowShedData)
             {formik.touched.current_capacity && formik.errors.current_capacity}
           </div>
 
+          {/* Productive Cows Input */}
           <CustomInput
             type="number"
             label="Productive Cows"
@@ -155,6 +193,7 @@ console.log(cowShedData)
             {formik.touched.productive_cows && formik.errors.productive_cows}
           </div>
 
+          {/* Unproductive Cows Input */}
           <CustomInput
             type="number"
             label="Unproductive Cows"
@@ -164,9 +203,11 @@ console.log(cowShedData)
             val={formik.values.unproductive_cows}
           />
           <div className="error">
-            {formik.touched.unproductive_cows && formik.errors.unproductive_cows}
+            {formik.touched.unproductive_cows &&
+              formik.errors.unproductive_cows}
           </div>
 
+          {/* Description Input */}
           <CustomInput
             type="text"
             label="Description"
@@ -176,9 +217,11 @@ console.log(cowShedData)
             val={formik.values.description_line1}
           />
           <div className="error">
-            {formik.touched.description_line1 && formik.errors.description_line1}
+            {formik.touched.description_line1 &&
+              formik.errors.description_line1}
           </div>
 
+          {/* GST Input */}
           <CustomInput
             type="text"
             label="GST Number"
@@ -187,10 +230,9 @@ console.log(cowShedData)
             onBlr={formik.handleBlur("GST")}
             val={formik.values.GST}
           />
-          <div className="error">
-            {formik.touched.GST && formik.errors.GST}
-          </div>
+          <div className="error">{formik.touched.GST && formik.errors.GST}</div>
 
+          {/* Total Area Input */}
           <CustomInput
             type="number"
             label="Total Area (sq ft)"
@@ -203,6 +245,41 @@ console.log(cowShedData)
             {formik.touched.total_area && formik.errors.total_area}
           </div>
 
+      
+          {/* Dropzone for image upload */}
+          <div className="bg-white border-1 p-5 text-center">
+            <Dropzone onDrop={handleDrop}>
+              {({ getRootProps, getInputProps }) => (
+                <section>
+                  <div {...getRootProps()}>
+                    <input {...getInputProps()} />
+                    <p>
+                      Drag 'n' drop some files here, or click to select files
+                    </p>
+                  </div>
+                </section>
+              )}
+            </Dropzone>
+            <div className="showimages d-flex flex-wrap gap-3 mt-3">
+              {images.map((img, index) => (
+                <div className="position-relative" key={index}>
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveImage(index)}
+                    className="btn-close position-absolute"
+                    style={{ top: "10px", right: "10px" }}
+                  ></button>
+                  <img
+                    src={img.preview}
+                    alt="preview"
+                    width={200}
+                    height={200}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+          {/* Total Employees Input */}
           <CustomInput
             type="number"
             label="Total Employees"
@@ -215,6 +292,7 @@ console.log(cowShedData)
             {formik.touched.total_employees && formik.errors.total_employees}
           </div>
 
+          {/* Incorporation Date Input */}
           <CustomInput
             type="date"
             label="Incorporation Date"
@@ -224,9 +302,11 @@ console.log(cowShedData)
             val={formik.values.incorporation_date}
           />
           <div className="error">
-            {formik.touched.incorporation_date && formik.errors.incorporation_date}
+            {formik.touched.incorporation_date &&
+              formik.errors.incorporation_date}
           </div>
 
+          {/* Monthly Expenses Input */}
           <CustomInput
             type="number"
             label="Monthly Expenses"
@@ -239,6 +319,7 @@ console.log(cowShedData)
             {formik.touched.monthly_expenses && formik.errors.monthly_expenses}
           </div>
 
+          {/* Address Input */}
           <CustomInput
             type="text"
             label="Address"
@@ -251,6 +332,7 @@ console.log(cowShedData)
             {formik.touched.address && formik.errors.address}
           </div>
 
+          {/* Phone Number Input */}
           <CustomInput
             type="text"
             label="Phone Number"
@@ -263,6 +345,7 @@ console.log(cowShedData)
             {formik.touched.phone_number && formik.errors.phone_number}
           </div>
 
+          {/* Submit Button */}
           <button
             className="btn btn-success border-0 rounded-3 my-5"
             type="submit"

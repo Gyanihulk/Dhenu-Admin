@@ -62,30 +62,36 @@ const CowShedList = () => {
 
   const cowShedState = useSelector((state) => state?.cowshed?.cowSheds);
 
-  const data1 = cowShedState?.map((shed, index) => ({
-    key: index + 1,
-    name: shed.name,
-    total_capacity: shed.total_capacity,
-    current_capacity: shed.current_capacity,
-    productive_cows: shed.productive_cows,
-    unproductive_cows: shed.unproductive_cows,
-    action: (
-      <>
-        <Link
-          to={`/admin/cow-shed/${shed.id}`}
-          className="fs-3 text-success"
-        >
-          <BiEdit />
-        </Link>
-        <button
-          className="ms-3 fs-3 text-danger bg-transparent border-0"
-          onClick={() => showModal(shed.id)}
-        >
-          <AiFillDelete />
-        </button>
-      </>
-    ),
-  }));
+  const data1 = cowShedState && cowShedState.length > 0
+  ? [...cowShedState] // Create a shallow copy of the array
+      .sort((a, b) => a.id - b.id) // Sort by ID in ascending order
+      .map((shed, index) => ({
+        sno: index + 1, // Serial number
+        key: shed.id,
+        name: shed.name,
+        total_capacity: shed.total_capacity,
+        current_capacity: shed.current_capacity,
+        productive_cows: shed.productive_cows,
+        unproductive_cows: shed.unproductive_cows,
+        action: (
+          <>
+            <Link
+              to={`/admin/cow-shed/${shed.id}`}
+              className="fs-3 text-success"
+            >
+              <BiEdit />
+            </Link>
+            <button
+              className="ms-3 fs-3 text-danger bg-transparent border-0"
+              onClick={() => showModal(shed.id)}
+            >
+              <AiFillDelete />
+            </button>
+          </>
+        ),
+      }))
+  : [];
+
 
   const deleteCowShedHandler = () => {
     dispatch(deleteCowShed(cowShedId));

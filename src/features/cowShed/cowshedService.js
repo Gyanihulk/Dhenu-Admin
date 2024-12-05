@@ -40,7 +40,7 @@ const createCowShed = async (cowshedData) => {
     // Make the POST request with the formData
     const response = await axios.post(
       `${base_url}/cow-shed`,
-      formData,
+      cowshedData,
       {
         headers: {
           Accept: 'application/json',
@@ -76,30 +76,38 @@ const getCowShed = async (id) => {
 };
 
 const updateCowShed = async (cowshedData) => {
-  const response = await axios.put(
-    `${base_url}cowshed/${cowshedData.id}`,
+  const token = localStorage.getItem('token');
+
+  // Ensure FormData is sent directly
+  const response = await axios.post(
+    `${base_url}/cow-shed/${cowshedData.id}`,
+    cowshedData.formData, // Pass FormData directly
     {
-      name: cowshedData.cowShedData.name,
-      total_capacity: cowshedData.cowShedData.total_capacity,
-      current_capacity: cowshedData.cowShedData.current_capacity,
-      productive_cows: cowshedData.cowShedData.productive_cows,
-      unproductive_cows: cowshedData.cowShedData.unproductive_cows,
-      description_line1: cowshedData.cowShedData.description_line1,
-      GST: cowshedData.cowShedData.GST,
-      total_area: cowshedData.cowShedData.total_area,
-      total_employees: cowshedData.cowShedData.total_employees,
-      incorporation_date: cowshedData.cowShedData.incorporation_date,
-      monthly_expenses: cowshedData.cowShedData.monthly_expenses,
-      address: cowshedData.cowShedData.address,
-      phone_number: cowshedData.cowShedData.phone_number,
-    },
-    config
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data', // FormData requires this header
+      },
+    }
   );
+
   return response.data;
 };
 
+
+
 const deleteCowShed = async (id) => {
-  const response = await axios.delete(`${base_url}cowshed/${id}`, config);
+  const token = localStorage.getItem('token');
+
+  // Ensure FormData is sent directly
+  const response = await axios.delete(
+    `${base_url}/cow-shed/${id}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
   return response.data;
 };
 

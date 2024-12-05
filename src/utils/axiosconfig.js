@@ -9,6 +9,7 @@ const getTokenFromLocalStorage = localStorage.getItem("user")
   ? localStorage.getItem("token")
   : null;
 console.log(getTokenFromLocalStorage)
+
 const httpClient = axios.create({
   baseURL: base_url,
   headers: {

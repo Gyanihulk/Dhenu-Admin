@@ -40,7 +40,7 @@ const Users = () => {
         key: i + 1,
         name: customerstate[i].first_name + " " + customerstate[i].last_name,
         email: customerstate[i].email,
-        mobile: customerstate[i].mobile,
+        mobile: customerstate[i].phone,
         gender:customerstate[i].gender,
       });
     }
