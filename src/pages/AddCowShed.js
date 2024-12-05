@@ -40,7 +40,7 @@ const AddCowShed = () => {
   const { isSuccess, isError, createdCowShed, updatedCowShed, cowShedData } =
     cowshedState;
   const [images, setImages] = useState([]);
-
+  const [picture, setPicture] = useState(null);
   useEffect(() => {
     if (cowShedData?.resources?.images?.length > 0) {
       const existingImages = cowShedData.resources.images.map((img) => ({
@@ -48,6 +48,13 @@ const AddCowShed = () => {
         preview: img.path, // Use the `path` for preview
       }));
       setImages(existingImages);
+    }
+    if (cowShedData?.picture) {
+      setPicture({
+        preview: cowShedData.picture, // Use the picture URL for preview
+      });
+    } else {
+      setPicture(null); // Reset if no picture is available
     }
   }, [cowShedData]);
 
@@ -88,7 +95,13 @@ const AddCowShed = () => {
     const updatedImages = images.filter((_, idx) => idx !== index);
     setImages(updatedImages);
   };
-
+  const handlePictureDrop = (acceptedFiles) => {
+    const selectedFile = acceptedFiles[0];
+    setPicture({
+      preview: URL.createObjectURL(selectedFile),
+      file: selectedFile,
+    });
+  };
   // Initialize Formik
   const formik = useFormik({
     initialValues: {
@@ -122,7 +135,9 @@ const AddCowShed = () => {
           formData.append("images[]", image.file); // Add new images only
         }
       });
-
+      if (picture?.file) {
+        formData.append("picture", picture.file);
+      }
       if (getCowShedId !== undefined) {
         dispatch(updateCowShed({ id: getCowShedId, formData }));
       } else {
@@ -245,7 +260,29 @@ const AddCowShed = () => {
             {formik.touched.total_area && formik.errors.total_area}
           </div>
 
-      
+          <div className="bg-white border-1 p-5 text-center">
+            <Dropzone onDrop={handlePictureDrop}>
+              {({ getRootProps, getInputProps }) => (
+                <section>
+                  <div {...getRootProps()}>
+                    <input {...getInputProps()} />
+                    <p>Drag 'n' drop picture here, or click to select a file</p>
+                  </div>
+                </section>
+              )}
+            </Dropzone>
+            {picture && (
+              <div className="showimages mt-3">
+                <img
+                  src={picture.preview}
+                  alt="picture-preview"
+                  width={200}
+                  height={200}
+                />
+              </div>
+            )}
+          </div>
+
           {/* Dropzone for image upload */}
           <div className="bg-white border-1 p-5 text-center">
             <Dropzone onDrop={handleDrop}>
