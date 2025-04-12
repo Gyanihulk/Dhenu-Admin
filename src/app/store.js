@@ -12,6 +12,7 @@ import uploadReducer from "../features/upload/uploadSlice";
 import couponReducer from "../features/coupon/couponSlice";
 import cowshedReducer from "../features/cowShed/cowshedSlice";
 import donationReducer from "../features/donations/donationSlice";
+import adminDonationReducer  from "../features/adminDonation/adminDonationSlice";
 export const store = configureStore({
   reducer: {
     auth: authReducer,
@@ -26,6 +27,7 @@ export const store = configureStore({
     upload: uploadReducer,
     coupon: couponReducer,
     cowshed: cowshedReducer,
-    donation:donationReducer
+    donation:donationReducer,
+    adminDonations: adminDonationReducer,
   },
 });

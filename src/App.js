@@ -27,6 +27,8 @@ import { OpenRoutes } from "./routing/OpenRoutes";
 import { PrivateRoutes } from "./routing/PrivateRoutes";
 import AddCowShed from "./pages/AddCowShed";
 import CowShedList from "./pages/CowSheds";
+import CollectedDonations from "./pages/Donations/CollectedDonations";
+import UpcomingDonations from "./pages/Donations/UpcomingDonations";
 function App() {
   return (
     <Router>
@@ -50,7 +52,7 @@ function App() {
           }
         >
           <Route index element={<Dashboard />} />
-          <Route path="enquiries" element={<Enquiries />} />
+          {/* <Route path="enquiries" element={<Enquiries />} />
           <Route path="enquiries/:id" element={<ViewEnq />} />
           <Route path="blog-list" element={<Bloglist />} />
           <Route path="blog" element={<Addblog />} />
@@ -62,7 +64,7 @@ function App() {
           <Route path="blog-category" element={<Addblogcat />} />
           <Route path="blog-category/:id" element={<Addblogcat />} />
           <Route path="orders" element={<Orders />} />
-          <Route path="order/:id" element={<ViewOrder />} />
+          <Route path="order/:id" element={<ViewOrder />} /> */}
           <Route path="users" element={<Users />} />
           {/* <Route path="list-color" element={<Colorlist />} />
           <Route path="color" element={<Addcolor />} />
@@ -80,7 +82,8 @@ function App() {
           <Route path="cow-shed" element={<AddCowShed />} />
           <Route path="list-cow-sheds" element={<CowShedList />} />
           <Route path="cow-shed/:id" element={<AddCowShed />} />
-          <Route path="donations" element={<Orders />} />
+          <Route path="collected-donations" element={<CollectedDonations />} />
+          <Route path="upcoming-donations" element={<UpcomingDonations  />} />
           <Route path="donation/:id" element={<ViewOrder />} />
         </Route>
       </Routes>

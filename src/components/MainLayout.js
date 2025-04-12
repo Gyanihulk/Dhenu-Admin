@@ -113,9 +113,14 @@ const MainLayout = () => {
               ],
             },
             {
-              key: "donations",
+              key: "collected-donations",
               icon: <FaDonate className="fs-4" />,
-              label: "Donations",
+              label: "Collected Donations",
+            },
+            {
+              key: "upcoming-donations",
+              icon: <FaDonate className="fs-4" />,
+              label: "Upcoming Donations",
             },
             // {
             //   key: "marketing",
@@ -134,38 +139,38 @@ const MainLayout = () => {
             //     },
             //   ],
             // },
-            {
-              key: "blogs",
-              icon: <FaBloggerB className="fs-4" />,
-              label: "Blogs",
-              children: [
-                {
-                  key: "blog",
-                  icon: <ImBlog className="fs-4" />,
-                  label: "Add Blog",
-                },
-                {
-                  key: "blog-list",
-                  icon: <FaBloggerB className="fs-4" />,
-                  label: "Blog List",
-                },
-                {
-                  key: "blog-category",
-                  icon: <ImBlog className="fs-4" />,
-                  label: "Add Blog Category",
-                },
-                {
-                  key: "blog-category-list",
-                  icon: <FaBloggerB className="fs-4" />,
-                  label: "Blog Category List",
-                },
-              ],
-            },
-            {
-              key: "Help & Feedback",
-              icon: <FaClipboardList className="fs-4" />,
-              label: "Enquiries",
-            },
+            // {
+            //   key: "blogs",
+            //   icon: <FaBloggerB className="fs-4" />,
+            //   label: "Blogs",
+            //   children: [
+            //     {
+            //       key: "blog",
+            //       icon: <ImBlog className="fs-4" />,
+            //       label: "Add Blog",
+            //     },
+            //     {
+            //       key: "blog-list",
+            //       icon: <FaBloggerB className="fs-4" />,
+            //       label: "Blog List",
+            //     },
+            //     {
+            //       key: "blog-category",
+            //       icon: <ImBlog className="fs-4" />,
+            //       label: "Add Blog Category",
+            //     },
+            //     {
+            //       key: "blog-category-list",
+            //       icon: <FaBloggerB className="fs-4" />,
+            //       label: "Blog Category List",
+            //     },
+            //   ],
+            // },
+            // {
+            //   key: "Help & Feedback",
+            //   icon: <FaClipboardList className="fs-4" />,
+            //   label: "Enquiries",
+            // },
             {
               key: "signout",
               icon: <AiOutlineLogout className="fs-4" />,
