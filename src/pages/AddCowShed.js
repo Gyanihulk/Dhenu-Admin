@@ -66,7 +66,11 @@ const AddCowShed = () => {
       dispatch(resetState());
     }
   }, [getCowShedId, dispatch]);
-
+useEffect(() => {
+  return () => {
+    dispatch(resetState());
+  };
+}, [dispatch])
   // Show toast notifications based on success or error states
   useEffect(() => {
     if (isSuccess && createdCowShed) {

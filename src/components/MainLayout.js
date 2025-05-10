@@ -37,9 +37,19 @@ const MainLayout = () => {
     <Layout /* onContextMenu={(e) => e.preventDefault()} */>
       <Sider trigger={null} collapsible collapsed={collapsed}>
         <div className="logo">
-          <h2 className="text-white fs-5 text-center py-3 mb-0">
-            <span className="sm-logo">DDA</span>
-            <span className="lg-logo">Dhenu Dharma Admin</span>
+          <h2 className="text-white text-center py-2 mb-0">
+            <span className="sm-logo"><img
+              src="/logo-2.png"
+              alt="Dhenu Dharma Logo"
+              style={{ height: "40px" }} // Adjust as needed
+            /></span>
+            <span className="lg-logo">
+              <img
+                src="/logo.png"
+                alt="Dhenu Dharma Logo"
+                style={{ height: "50px" }} // Adjust as needed
+              />
+            </span>
           </h2>
         </div>
         <Menu
@@ -196,22 +206,22 @@ const MainLayout = () => {
           )}
           <div className="d-flex gap-4 align-items-center">
             <div className="d-flex gap-3 align-items-center dropdown">
-              <div>
+              {/* <div>
                 <img
                   width={32}
                   height={32}
                   src="https://stroyka-admin.html.themeforest.scompiler.ru/variants/ltr/images/customers/customer-4-64x64.jpg"
                   alt=""
                 />
-              </div>
+              </div> */}
               <div
                 role="button"
                 id="dropdownMenuLink"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                <h5 className="mb-0">{user && user?.first_name}</h5> 
-                <p className="mb-0">{user && user?.email }</p>
+                <h5 className="mb-0">{user && user?.first_name}</h5>
+                <p className="mb-0">{user && user?.email}</p>
               </div>
               <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
                 <li>
