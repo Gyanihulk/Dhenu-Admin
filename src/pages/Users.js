@@ -20,10 +20,6 @@ const columns = [
     title: "Mobile",
     dataIndex: "mobile",
   },
-  {
-    title: "Genter",
-    dataIndex: "gender",
-  },
 ];
 
 const Users = () => {
@@ -41,7 +37,6 @@ const Users = () => {
         name: customerstate[i].first_name + " " + customerstate[i].last_name,
         email: customerstate[i].email,
         mobile: customerstate[i].phone,
-        gender:customerstate[i].gender,
       });
     }
   }
