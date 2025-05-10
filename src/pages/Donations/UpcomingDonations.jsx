@@ -31,7 +31,11 @@ const columns = [
   {
     title: "Cow Shed",
     dataIndex: "cow_shed_name",
-  }
+  },
+  {
+    title: "User Name",
+    dataIndex: "user_name",
+  },
 ];
 
 const UpcomingDonations = () => {
@@ -55,8 +59,10 @@ const UpcomingDonations = () => {
       frequency: donation.frequency,
       date: new Date(donation.donation_date).toLocaleDateString('en-GB'),
       cow_shed_name: donation.cow_shed_name, 
+      user_name: donation.user_name, 
     }));
-    console.log("UPCOMING STATE FROM REDUX", upcoming);
+  
+  console.log("UPCOMING STATE FROM REDUX", upcoming);
   return (
     <div>
       <h3 className="mb-4 title">Upcoming Donations</h3>

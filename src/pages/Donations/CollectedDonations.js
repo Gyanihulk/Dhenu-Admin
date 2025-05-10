@@ -32,6 +32,10 @@ const tableColumns = [
     title: "Cow Shed",
     dataIndex: "cow_shed_name",
   },
+  {
+    title: "User Name",
+    dataIndex: "user_name",
+  },
 ];
 
 const CollectedDonations = () => {
@@ -58,6 +62,7 @@ const CollectedDonations = () => {
       frequency: donation.frequency,
       date: new Date(donation.donation_date).toLocaleDateString('en-GB'),
       cow_shed_name: donation.cow_shed_name, 
+      user_name: donation.user_name, 
     }));
 
   return (

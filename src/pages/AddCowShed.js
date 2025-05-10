@@ -28,6 +28,20 @@ const schema = yup.object().shape({
   monthly_expenses: yup.number().required("Monthly expenses are required"),
   address: yup.string().required("Address is required"),
   phone_number: yup.string().required("Phone number is required"),
+  meet_link: yup.string().url().nullable(),
+  map_link: yup.string().url().nullable(),
+  distance_from_center: yup.string().nullable(),
+  chairman_name: yup.string().nullable(),
+  chairman_phone: yup.string().nullable(),
+  guardian_name: yup.string().nullable(),
+  guardian_phone: yup.string().nullable(),
+  bank_account_number: yup.string().nullable(),
+  bank_account_name: yup.string().nullable(),
+  bank_name: yup.string().nullable(),
+  bank_ifsc: yup.string().nullable(),
+  bank_branch: yup.string().nullable(),
+  feeding_timings: yup.string().nullable(),
+  agreement_signed: yup.boolean().nullable(),
 });
 
 const AddCowShed = () => {
@@ -66,11 +80,11 @@ const AddCowShed = () => {
       dispatch(resetState());
     }
   }, [getCowShedId, dispatch]);
-useEffect(() => {
-  return () => {
-    dispatch(resetState());
-  };
-}, [dispatch])
+  useEffect(() => {
+    return () => {
+      dispatch(resetState());
+    };
+  }, [dispatch])
   // Show toast notifications based on success or error states
   useEffect(() => {
     if (isSuccess && createdCowShed) {
@@ -122,6 +136,20 @@ useEffect(() => {
       monthly_expenses: cowShedData?.monthly_expenses || "",
       address: formatAddress(cowShedData?.address || ""),
       phone_number: cowShedData?.phone_number || "",
+      meet_link: cowShedData?.meet_link || "",
+      map_link: cowShedData?.map_link || "",
+      distance_from_center: cowShedData?.distance_from_center || "",
+      chairman_name: cowShedData?.chairman_name || "",
+      chairman_phone: cowShedData?.chairman_phone || "",
+      guardian_name: cowShedData?.guardian_name || "",
+      guardian_phone: cowShedData?.guardian_phone || "",
+      bank_account_number: cowShedData?.bank_account_number || "",
+      bank_account_name: cowShedData?.bank_account_name || "",
+      bank_name: cowShedData?.bank_name || "",
+      bank_ifsc: cowShedData?.bank_ifsc || "",
+      bank_branch: cowShedData?.bank_branch || "",
+      feeding_timings: cowShedData?.feeding_timings || "",
+      agreement_signed: cowShedData?.agreement_signed === 1 ? 1:0, 
     },
     enableReinitialize: true, // Reinitialize form with fetched cow shed data
     validationSchema: schema, // Attach validation schema
@@ -385,7 +413,136 @@ useEffect(() => {
           <div className="error">
             {formik.touched.phone_number && formik.errors.phone_number}
           </div>
+          <CustomInput
+            type="text"
+            label="Chairman Name"
+            name="chairman_name"
+            onChng={formik.handleChange("chairman_name")}
+            onBlr={formik.handleBlur("chairman_name")}
+            val={formik.values.chairman_name}
+          />
 
+          <CustomInput
+            type="text"
+            label="Chairman Phone"
+            name="chairman_phone"
+            onChng={formik.handleChange("chairman_phone")}
+            onBlr={formik.handleBlur("chairman_phone")}
+            val={formik.values.chairman_phone}
+          />
+
+          <CustomInput
+            type="text"
+            label="Guardian Name"
+            name="guardian_name"
+            onChng={formik.handleChange("guardian_name")}
+            onBlr={formik.handleBlur("guardian_name")}
+            val={formik.values.guardian_name}
+          />
+
+          <CustomInput
+            type="text"
+            label="Guardian Phone"
+            name="guardian_phone"
+            onChng={formik.handleChange("guardian_phone")}
+            onBlr={formik.handleBlur("guardian_phone")}
+            val={formik.values.guardian_phone}
+          />
+
+          <CustomInput
+            type="text"
+            label="Bank Account Number"
+            name="bank_account_number"
+            onChng={formik.handleChange("bank_account_number")}
+            onBlr={formik.handleBlur("bank_account_number")}
+            val={formik.values.bank_account_number}
+          />
+
+          <CustomInput
+            type="text"
+            label="Bank Account Name"
+            name="bank_account_name"
+            onChng={formik.handleChange("bank_account_name")}
+            onBlr={formik.handleBlur("bank_account_name")}
+            val={formik.values.bank_account_name}
+          />
+
+          <CustomInput
+            type="text"
+            label="Bank Name"
+            name="bank_name"
+            onChng={formik.handleChange("bank_name")}
+            onBlr={formik.handleBlur("bank_name")}
+            val={formik.values.bank_name}
+          />
+
+          <CustomInput
+            type="text"
+            label="IFSC Code"
+            name="bank_ifsc"
+            onChng={formik.handleChange("bank_ifsc")}
+            onBlr={formik.handleBlur("bank_ifsc")}
+            val={formik.values.bank_ifsc}
+          />
+
+          <CustomInput
+            type="text"
+            label="Bank Branch"
+            name="bank_branch"
+            onChng={formik.handleChange("bank_branch")}
+            onBlr={formik.handleBlur("bank_branch")}
+            val={formik.values.bank_branch}
+          />
+
+          <CustomInput
+            type="text"
+            label="Feeding Timings"
+            name="feeding_timings"
+            onChng={formik.handleChange("feeding_timings")}
+            onBlr={formik.handleBlur("feeding_timings")}
+            val={formik.values.feeding_timings}
+          />
+
+          <CustomInput
+            type="url"
+            label="Meet Link"
+            name="meet_link"
+            onChng={formik.handleChange("meet_link")}
+            onBlr={formik.handleBlur("meet_link")}
+            val={formik.values.meet_link}
+          />
+
+          <CustomInput
+            type="url"
+            label="Map Link"
+            name="map_link"
+            onChng={formik.handleChange("map_link")}
+            onBlr={formik.handleBlur("map_link")}
+            val={formik.values.map_link}
+          />
+
+          <CustomInput
+            type="text"
+            label="Distance from Center"
+            name="distance_from_center"
+            onChng={formik.handleChange("distance_from_center")}
+            onBlr={formik.handleBlur("distance_from_center")}
+            val={formik.values.distance_from_center}
+          />
+
+          <div className="form-check mt-3">
+            <input
+              className="form-check-input"
+              type="checkbox"
+              id="agreement_signed"
+              name="agreement_signed"
+              checked={formik.values.agreement_signed}
+              onChange={formik.handleChange}
+            />
+            <label className="form-check-label" htmlFor="agreement_signed">
+              Agreement Signed
+            </label>
+          </div>
           {/* Submit Button */}
           <button
             className="btn btn-success border-0 rounded-3 my-5"
