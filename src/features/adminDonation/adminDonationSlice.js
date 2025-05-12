@@ -28,6 +28,7 @@ const initialState = {
         tomorrow: [],
         next_week: [],
         next_month: [],
+        this_month: []
       },
   completed: [],
   totalCollected: 0,
@@ -36,6 +37,10 @@ const initialState = {
     donations: [],
   },
   lastMonth: {
+    total: 0,
+    donations: [],
+  },
+  thisMonth: {
     total: 0,
     donations: [],
   },
@@ -81,6 +86,7 @@ const adminDonationSlice = createSlice({
           tomorrow: action.payload.tomorrow || [],
           next_week: action.payload.next_week || [],
           next_month: action.payload.next_month || [],
+          this_month: action.payload.this_month || [],
         };
       }).addCase(getMetrics.pending, (state) => {
         state.isLoading = true;
@@ -111,6 +117,7 @@ const adminDonationSlice = createSlice({
         state.totalCollected = action.payload.total_amount_collected;
         state.lastWeek = action.payload.last_week;
         state.lastMonth = action.payload.last_month;
+        state.thisMonth = action.payload.this_month;
       })
       .addCase(getCompletedDonations.rejected, (state, action) => {
         state.isLoading = false;

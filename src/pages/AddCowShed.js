@@ -271,8 +271,8 @@ const AddCowShed = () => {
           {/* GST Input */}
           <CustomInput
             type="text"
-            label="GST Number"
-            name="GST"
+            label="Pan Number"
+            name="GPan Number"
             onChng={formik.handleChange("GST")}
             onBlr={formik.handleBlur("GST")}
             val={formik.values.GST}
@@ -282,7 +282,7 @@ const AddCowShed = () => {
           {/* Total Area Input */}
           <CustomInput
             type="number"
-            label="Total Area (sq ft)"
+            label="Total Area (In Acres)"
             name="total_area"
             onChng={formik.handleChange("total_area")}
             onBlr={formik.handleBlur("total_area")}

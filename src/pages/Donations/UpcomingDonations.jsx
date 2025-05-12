@@ -9,7 +9,7 @@ const columns = [
     dataIndex: "key",
   },
   {
-    title: "Donor",
+    title: "Donation in the Name",
     dataIndex: "donation_name",
   },
   {
@@ -42,7 +42,7 @@ const UpcomingDonations = () => {
   const dispatch = useDispatch();
 
   const {
-    upcoming = { tomorrow: [], next_week: [], next_month: [] },
+    upcoming = { tomorrow: [], next_week: [], next_month: [] ,this_month:[]},
     isLoading,
   } = useSelector((state) => state.adminDonations);
 
@@ -109,6 +109,13 @@ const UpcomingDonations = () => {
       <Table
         columns={columns}
         dataSource={formatTableData(upcoming.next_week)}
+        loading={isLoading}
+        pagination={{ pageSize: 5 }}
+      />
+<h4 className="mt-4 mb-2">This Month</h4>
+      <Table
+        columns={columns}
+        dataSource={formatTableData(upcoming.this_month)}
         loading={isLoading}
         pagination={{ pageSize: 5 }}
       />

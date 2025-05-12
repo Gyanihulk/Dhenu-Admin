@@ -9,7 +9,7 @@ const tableColumns = [
     dataIndex: "key",
   },
   {
-    title: "Donor",
+    title: "Donation in the Name",
     dataIndex: "donation_name",
   },
   {
@@ -46,6 +46,7 @@ const CollectedDonations = () => {
     totalCollected = 0,
     lastWeek = { total: 0, donations: [] },
     lastMonth = { total: 0, donations: [] },
+    thisMonth = { total: 0, donations: [] },
     isLoading = false,
   } = useSelector((state) => state.adminDonations || {});
 
@@ -61,8 +62,8 @@ const CollectedDonations = () => {
       donation_type: donation.donation_type,
       frequency: donation.frequency,
       date: new Date(donation.donation_date).toLocaleDateString('en-GB'),
-      cow_shed_name: donation.cow_shed_name, 
-      user_name: donation.user_name, 
+      cow_shed_name: donation.cow_shed_name,
+      user_name: donation.user_name,
     }));
 
   return (
@@ -118,6 +119,13 @@ const CollectedDonations = () => {
         pagination={{ pageSize: 5 }}
       />
 
+      <h4 className="mt-4 mb-2">This Month</h4>
+      <Table
+        columns={tableColumns}
+        dataSource={formatTableData(thisMonth.donations)}
+        loading={isLoading}
+        pagination={{ pageSize: 5 }}
+      />
       <h4 className="mt-4 mb-2">Last Month</h4>
       <Table
         columns={tableColumns}
