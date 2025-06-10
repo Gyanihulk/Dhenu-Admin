@@ -120,6 +120,7 @@ const AddCowShed = () => {
       file: selectedFile,
     });
   };
+
   // Initialize Formik
   const formik = useFormik({
     initialValues: {
@@ -149,13 +150,13 @@ const AddCowShed = () => {
       bank_ifsc: cowShedData?.bank_ifsc || "",
       bank_branch: cowShedData?.bank_branch || "",
       feeding_timings: cowShedData?.feeding_timings || "",
-      agreement_signed: cowShedData?.agreement_signed === 1 ? 1:0, 
+      agreement_signed: cowShedData?.agreement_signed === 1 ? 1 : 0,
     },
     enableReinitialize: true, // Reinitialize form with fetched cow shed data
     validationSchema: schema, // Attach validation schema
     onSubmit: (values) => {
       const formData = new FormData();
-
+      // console.log("Submitting form with values:", values);
       // Append form values
       Object.keys(values).forEach((key) => {
         formData.append(key, values[key]);
@@ -173,11 +174,13 @@ const AddCowShed = () => {
       if (getCowShedId !== undefined) {
         dispatch(updateCowShed({ id: getCowShedId, formData }));
       } else {
+        // console.log("Dispatching createCowShed...");
         dispatch(createCowShed(formData));
         formik.resetForm();
       }
     },
   });
+  // console.log("❌ Validation Errors:", formik.errors)
   return (
     <div>
       <h3 className="mb-4 title">
@@ -421,7 +424,9 @@ const AddCowShed = () => {
             onBlr={formik.handleBlur("chairman_name")}
             val={formik.values.chairman_name}
           />
-
+ <div className="error">
+            {formik.touched.chairman_name && formik.errors.chairman_name}
+          </div>
           <CustomInput
             type="text"
             label="Chairman Phone"
@@ -430,6 +435,9 @@ const AddCowShed = () => {
             onBlr={formik.handleBlur("chairman_phone")}
             val={formik.values.chairman_phone}
           />
+          <div className="error">
+            {formik.touched.chairman_phone && formik.errors.chairman_phone}
+          </div>
 
           <CustomInput
             type="text"
@@ -439,6 +447,9 @@ const AddCowShed = () => {
             onBlr={formik.handleBlur("guardian_name")}
             val={formik.values.guardian_name}
           />
+          <div className="error">
+            {formik.touched.guardian_name && formik.errors.guardian_name}
+          </div>
 
           <CustomInput
             type="text"
@@ -448,6 +459,9 @@ const AddCowShed = () => {
             onBlr={formik.handleBlur("guardian_phone")}
             val={formik.values.guardian_phone}
           />
+          <div className="error">
+            {formik.touched.guardian_phone && formik.errors.guardian_phone}
+          </div>
 
           <CustomInput
             type="text"
@@ -457,6 +471,9 @@ const AddCowShed = () => {
             onBlr={formik.handleBlur("bank_account_number")}
             val={formik.values.bank_account_number}
           />
+          <div className="error">
+            {formik.touched.bank_account_number && formik.errors.bank_account_number}
+          </div>
 
           <CustomInput
             type="text"
@@ -466,6 +483,9 @@ const AddCowShed = () => {
             onBlr={formik.handleBlur("bank_account_name")}
             val={formik.values.bank_account_name}
           />
+          <div className="error">
+            {formik.touched.bank_account_name && formik.errors.bank_account_name}
+          </div>
 
           <CustomInput
             type="text"
@@ -475,6 +495,9 @@ const AddCowShed = () => {
             onBlr={formik.handleBlur("bank_name")}
             val={formik.values.bank_name}
           />
+          <div className="error">
+            {formik.touched.bank_name && formik.errors.bank_name}
+          </div>
 
           <CustomInput
             type="text"
@@ -484,6 +507,9 @@ const AddCowShed = () => {
             onBlr={formik.handleBlur("bank_ifsc")}
             val={formik.values.bank_ifsc}
           />
+          <div className="error">
+            {formik.touched.bank_ifsc && formik.errors.bank_ifsc}
+          </div>
 
           <CustomInput
             type="text"
@@ -493,6 +519,9 @@ const AddCowShed = () => {
             onBlr={formik.handleBlur("bank_branch")}
             val={formik.values.bank_branch}
           />
+          <div className="error">
+            {formik.touched.bank_branch && formik.errors.bank_branch}
+          </div>
 
           <CustomInput
             type="text"
@@ -502,6 +531,9 @@ const AddCowShed = () => {
             onBlr={formik.handleBlur("feeding_timings")}
             val={formik.values.feeding_timings}
           />
+          <div className="error">
+            {formik.touched.feeding_timings && formik.errors.feeding_timings}
+          </div>
 
           <CustomInput
             type="url"
@@ -511,6 +543,9 @@ const AddCowShed = () => {
             onBlr={formik.handleBlur("meet_link")}
             val={formik.values.meet_link}
           />
+          <div className="error">
+            {formik.touched.meet_link && formik.errors.meet_link}
+          </div>
 
           <CustomInput
             type="url"
@@ -521,6 +556,9 @@ const AddCowShed = () => {
             val={formik.values.map_link}
           />
 
+          <div className="error">
+            {formik.touched.map_link && formik.errors.map_link}
+          </div>
           <CustomInput
             type="text"
             label="Distance from Center"
@@ -529,20 +567,28 @@ const AddCowShed = () => {
             onBlr={formik.handleBlur("distance_from_center")}
             val={formik.values.distance_from_center}
           />
+          <div className="error">
+            {formik.touched.distance_from_center && formik.errors.distance_from_center}
+          </div>
 
           <div className="form-check mt-3">
-            <input
-              className="form-check-input"
-              type="checkbox"
-              id="agreement_signed"
-              name="agreement_signed"
-              checked={formik.values.agreement_signed}
-              onChange={formik.handleChange}
-            />
+          <input
+  className="form-check-input"
+  type="checkbox"
+  id="agreement_signed"
+  name="agreement_signed"
+  checked={formik.values.agreement_signed}
+  onChange={(e) =>
+    formik.setFieldValue("agreement_signed", e.target.checked)
+  }
+/>
+
             <label className="form-check-label" htmlFor="agreement_signed">
               Agreement Signed
             </label>
           </div>
+         
+
           {/* Submit Button */}
           <button
             className="btn btn-success border-0 rounded-3 my-5"

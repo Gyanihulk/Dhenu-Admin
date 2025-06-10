@@ -29,7 +29,7 @@ const createCowShed = async (cowshedData) => {
     Object.keys(cowshedData).forEach((key) => {
       formData.append(key, cowshedData[key]);
     });
-
+console.log(cowshedData,"indide the api seervice")
     // Retrieve token from local storage
     const token = localStorage.getItem('token'); // Adjust the key if different
 
